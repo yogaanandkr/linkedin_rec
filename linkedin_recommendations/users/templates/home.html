@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Google Sign In {% endblock title %}
+    <title>Google Sign In</title>
+<body>
+{% block content %}
+
+{% include 'includes/nav.html' %}
+{% if user.is_authenticated %} 
+<p>You are signed in as {{user.email}}</p>
+<a href="logout">Logout</a>
+{% else %}
+{% load socialaccount %} 
+{% comment %} this will enable to use the login urls {% endcomment %}
+<h2>Google Login</h2>
+<a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
+
+{% endif %}
+{% endblock content %}
+{% comment %} this will provide the url for google signin  {% endcomment %}
+
