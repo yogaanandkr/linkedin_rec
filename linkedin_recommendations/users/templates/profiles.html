@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Profiles{% endblock title %}
+
+{% block content %}
+{% include "includes/nav.html" %}
+
+{% for profile in profiles %}
+
+<div class="container-fluid">
+    <div style="display: flex;" class="users">
+        <div style="height: 50px; width: 50px;" class="dp">{% if profile.profile_pic %}
+            <img style="width: 100%;  border-radius: 50px;" src="{{ profile.profile_pic.url }}" alt="">
+          {% else %}
+            <p>No profile picture available</p>
+            {% endif %}
+        </div>
+        <div class="user_name"> <a href="profile/{{profile.user.id}}">{{profile.user}}</a></div>
+        
+    </div>
+</div>
+
+{% endfor %}
+
+
+
+{% endblock content %}
+
+
+
+
+{% comment %} <h1>{{profile.bio}}</h1> {% endcomment %}

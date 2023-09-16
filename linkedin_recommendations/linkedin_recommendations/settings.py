@@ -157,3 +157,7 @@ AUTHENTICATION_BACKENDS = ( # here we are specifying that we are using both  the
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+
+MEDIA_ROOT = BASE_DIR / "uploads"
+MEDIA_URL = "/files/"

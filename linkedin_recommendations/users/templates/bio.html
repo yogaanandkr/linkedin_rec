@@ -3,11 +3,27 @@
 {% block title %}{{user.name}} profile{% endblock title %}
 
 {% block content %}
-
+{% include "includes/nav.html" %}
 <h1>User Profile</h1>
     
 <!-- Display user's bio information -->
-<h2>{{ user.name }}</h2>
-<p>{{ user.bio }}</p>
+<h2>{{ profile.user.username }}</h2>
+<p>{{ profile.bio }}</p>
 
+{% for recommendation in recommendations %}
+    <a href="profile/{{recommended_by_id.id}}"><h4>{{recommendation.recommended_by}}</h4></a>
+
+    <p>{{recommendation.recommendation}}</p>
+    <hr>
+
+{% endfor %}
+
+<form action="/recommend" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="c_user" value="{{user.username}}">
+    <input type="hidden" name="v_user" value="{{profile.user.username}}" id="">
+    <input type="hidden" name="v_user_id" value="{{profile.user.id}}" id="">
+    <textarea name="recommendation" id="" cols="30" rows="10"></textarea>
+    <button type="submit">Submit</button>
+</form>
 {% endblock content %}
