@@ -15,6 +15,7 @@ class Bio(models.Model):
     
 
 class Recommendations(models.Model):
-    recommended_by = models.CharField(max_length=100, null=True) # current user
+    # recommended_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='') # current user
+    recommended_by = models.CharField(max_length=100, null=True)
     recommended_user = models.CharField(max_length=100, null=True) # some other user
     recommendation = models.TextField(max_length=5000, null=True)

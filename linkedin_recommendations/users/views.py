@@ -49,15 +49,22 @@ def logout_view(request):
 
     return redirect('/')
 
-def userdetail(request, id):
-    user = User.objects.get(id = id)
+def userdetail(request, name):
+    user = User.objects.get(username = name)
     profile = Bio.objects.get(user = user)
     recommendations = Recommendations.objects.filter(recommended_user = user.username)
-    # recommended_by_get = recommendations.recommended_by
-    # recommended_by_id = User.objects.get(username = recommended_by_get)
+
+    if Recommendations.objects.filter(recommended_by = request.user.username, recommended_user = user.username).exists() or (user.username == request.user.username):
+        display = 'none'
+
+    else:
+        display = 'block'
+
+    
     return render(request, 'bio.html', {
         'profile' : profile,
         'recommendations' : recommendations,
+        'display': display
         # 'recommended_by_id' : recommended_by_id
 
     })
@@ -76,4 +83,4 @@ def recommend(request):
         new_recommendation = Recommendations.objects.create(recommended_by = c_user, recommended_user = v_user, recommendation = recommendation)
         new_recommendation.save()
 
-        return redirect('profile/'+ str(v_user_obj.id))
+        return redirect('profile/'+ str(v_user_obj.username))

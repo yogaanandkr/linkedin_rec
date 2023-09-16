@@ -7,5 +7,5 @@ urlpatterns = [
     path("logout", views.logout_view),
     path("profiles", views.profiles, name = 'profiles'),
     path("recommend", views.recommend, name = 'recommend'),
-    path("profile/<int:id>", views.userdetail, name = 'user_detail')
+    path("profile/<str:name>", views.userdetail, name = 'user_detail')
 ]
