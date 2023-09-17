@@ -6,19 +6,40 @@
 {% include "includes/nav.html" %}
     
 <!-- Display user's bio information -->
+{% if profile.user.username == request.user.username%}
+
+<a href="update_bio/{{request.user.username}}">edit</a>
+
+{% endif %}
 <img src="{{profile.profile_pic.url}}" alt="">
 <h2>{{ profile.user.username }}</h2>
 <p>{{ profile.bio }}</p>
 
-{% for recommendation in recommendations %}
-    <a href="{{recommendation.recommended_by}}"><h4>{{recommendation.recommended_by}}</h4></a>
 
+<h3>Recommend By:</h3>
+
+{% for recommendation in recommendations %}
+    <div style="display: flex;" class="recommendations">
+        <a href="{{recommendation.recommended_by}}"><h4>{{recommendation.recommended_by}}</h4></a>      
+    {% if request.user.username == recommendation.recommended_by %}
+    <p>{{recommendation.rec_created_at}} </p>
+    <a class="btn btn-primary" href="edit/rec/{{recommendation.id}}">edit</a>
+    <form action="/rec_delete" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{recommendation.id}}">
+        <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+    {% endif %}
+
+    </div>
     <p>{{recommendation.recommendation}}</p>
+
     <hr>
 
 {% endfor %}
 
-<div style="display: {{display}};" class="form">
+{% if display == 'block' %}
+<div class="form">
     <form action="/recommend" method="POST">
         {% csrf_token %}
         <input type="hidden" name="c_user" value="{{user.username}}">
@@ -28,4 +49,5 @@
         <button type="submit">Submit</button>
     </form>
 </div>
+{% endif %}
 {% endblock content %}

@@ -161,3 +161,7 @@ LOGOUT_REDIRECT_URL = "/"
 
 MEDIA_ROOT = BASE_DIR / "uploads"
 MEDIA_URL = "/files/"
+
+
+
+DATETIME_FORMAT = 'd-m-y'

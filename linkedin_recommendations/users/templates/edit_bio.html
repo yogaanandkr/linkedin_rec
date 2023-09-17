@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{bio.user.username}}{% endblock title %}
+
+{% block content %}
+
+<form action="/update_profile" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="name" value="{{bio.user.username}}" id="">
+    <input type="file" name = 'image'>
+    <textarea name="bio" id="" cols="30" rows="10">{{bio.bio}}</textarea>
+    <button class="btn btn-success" type="submit">Save Changes</button>
+</form>
+{% endblock content %}

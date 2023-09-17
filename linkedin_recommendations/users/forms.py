@@ -5,5 +5,6 @@ from .models import Bio
 
 
 class ProfileForm(forms.ModelForm):
-    model = Bio 
-    fields = '__all__'
+    class Meta:
+        model = Bio 
+        fields = ['bio', 'profile_pic']
