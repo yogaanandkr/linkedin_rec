@@ -3,7 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.home),
+    path("", views.home, name = 'home'),
     path("logout", views.logout_view),
     path("profiles", views.profiles, name = 'profiles'),
     path("recommend", views.recommend, name = 'recommend'),
@@ -12,5 +12,6 @@ urlpatterns = [
     path("rec_delete", views.rec_delete, name = 'rec_delete'),
     path("profile/update_bio/<name>", views.get_profile_form, name = 'update_bio'),
     path("update_profile", views.updateprofile, name = 'update_profile'),
-    path("profile/<str:name>", views.userdetail, name = 'user_detail')
+    path("profile/<str:name>", views.userdetail, name = 'user_detail'),
+    path("upload_post", views.upload_post, name='upload_post')
 ]

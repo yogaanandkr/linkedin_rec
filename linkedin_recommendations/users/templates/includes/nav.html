@@ -5,10 +5,13 @@
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/profiles">All Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upload_post">Upload post</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -20,10 +23,10 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
 
         </form>
-        <img style="background-color: black; height: 50px; width: 50px;" src="{{ request.user.profile_pic.url }}" alt="">
+        <img style="height: 50px; width: 50px;" src="{{ request.user.profile_pic.url }}" alt="">
 
     </div>
 </nav>

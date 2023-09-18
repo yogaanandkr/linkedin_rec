@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse_lazy    
 
 from . forms import ProfileForm
-from . models import Bio, User, Recommendations
+from . models import Bio, User, Recommendations, Posts
 # Create your views here.
 
 
@@ -18,12 +18,18 @@ from . models import Bio, User, Recommendations
 def create_bio_for_user(sender, request, user, **kwags):
     if not Bio.objects.filter(user = user).exists():
         Bio.objects.create(user = user)
+        Posts.objects.create(user = user)
 
     return render(request, 'home.html')
 
 
+
 def home(request):
-    return render(request, "home.html")
+    all_posts = Posts.objects.all().order_by('-created_at')
+    print(all_posts)
+    return render(request, "home.html", {
+        'all_posts' : all_posts
+    })
 
 
 # def profiles(request):
@@ -172,3 +178,13 @@ def updateprofile(request):
     
 #     def get_success_url(self) -> str:
 #         return reverse_lazy('profile', kwargs={'username': self.request.user.username})
+
+
+def upload_post(request):
+    if request.method == "POST":
+        image = request.FILES['post']
+        caption = request.POST['caption']
+        create_post = Posts.objects.create(user = request.user, post_img = image, caption = caption)
+        create_post.save()
+        return redirect('home')
+    return render(request, 'upload_post.html')

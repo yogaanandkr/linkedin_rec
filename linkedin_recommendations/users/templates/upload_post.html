@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Create new post{% endblock title %}
+
+
+{% block content %}
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="post">Choose image</label>
+    <input required name = "post" type="file">
+    <label for="caption">Caption</label>
+    <textarea name="caption" id="" cols="30" rows="10"></textarea>
+    <button type="submit" class="btn btn-success">Upload Post</button>
+</form>
+
+{% endblock content %}
