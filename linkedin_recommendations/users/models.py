@@ -32,3 +32,13 @@ class Posts(models.Model):
     caption = models.TextField()
     created_at  = models.DateTimeField(default = datetime.now)
     no_of_likes = models.IntegerField(default = 0)
+
+
+
+class Follow(models.Model):
+    follower = models.CharField(max_length=100)
+    user = models.CharField(max_length=100)
+
+
+    def __str__(self) -> str:
+        return self.user

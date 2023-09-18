@@ -13,5 +13,6 @@ urlpatterns = [
     path("profile/update_bio/<name>", views.get_profile_form, name = 'update_bio'),
     path("update_profile", views.updateprofile, name = 'update_profile'),
     path("profile/<str:name>", views.userdetail, name = 'user_detail'),
-    path("upload_post", views.upload_post, name='upload_post')
+    path("upload_post", views.upload_post, name='upload_post'),
+    path("follow", views.follow, name='follow'),
 ]

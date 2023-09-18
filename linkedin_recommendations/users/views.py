@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse_lazy    
 
 from . forms import ProfileForm
-from . models import Bio, User, Recommendations, Posts
+from . models import Bio, User, Recommendations, Posts, Follow
 # Create your views here.
 
 
@@ -60,6 +60,12 @@ def userdetail(request, name):
     user = User.objects.get(username = name)
     profile = Bio.objects.get(user = user)
     recommendations = Recommendations.objects.filter(recommended_user = user.username).order_by('-id')
+    if Follow.objects.filter(user = name).exists():
+        follower_count = len(Follow.objects.filter(user = name))
+        button_text = 'Unfollow'
+    else:
+        follower_count = 0
+        button_text = 'Follow'
 
     if Recommendations.objects.filter(recommended_by = request.user.username, recommended_user = user.username).exists() or (user.username == request.user.username):
         display = 'none'
@@ -71,7 +77,9 @@ def userdetail(request, name):
     return render(request, 'bio.html', {
         'profile' : profile,
         'recommendations' : recommendations,
-        'display': display
+        'display': display,
+        'follower_count' : follower_count,
+        'button_text' : button_text
         # 'recommended_by_id' : recommended_by_id
 
     })
@@ -188,3 +196,19 @@ def upload_post(request):
         create_post.save()
         return redirect('home')
     return render(request, 'upload_post.html')
+
+
+def follow(request):
+    if request.method == "POST":
+        user = request.POST['user']
+        follower = request.user.username
+
+        if Follow.objects.filter(follower = follower, user = user).exists():
+            delete_follow = Follow.objects.get(follower = follower, user = user)
+            delete_follow.delete()
+        
+        else:
+            create_follow = Follow.objects.create(follower = follower, user = user)
+            create_follow.save()
+        
+        return redirect('profile/' + user)

@@ -11,8 +11,14 @@
 <a href="update_bio/{{request.user.username}}">edit</a>
 
 {% endif %}
+<form action="/follow" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name = "user" value="{{profile.user.username}}">
+    <button type="submit">{{button_text}}</button>
+</form>
 <img src="{{profile.profile_pic.url}}" alt="">
 <h2>{{ profile.user.username }}</h2>
+<p>{{follower_count}} Followers</p>
 <p>{{ profile.bio }}</p>
 
 
