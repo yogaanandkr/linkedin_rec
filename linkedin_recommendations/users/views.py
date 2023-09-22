@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse_lazy    
 
 from . forms import ProfileForm
-from . models import Bio, User, Recommendations, Posts, Follow
+from . models import Bio, User, Recommendations, Posts, Follow, Likes
 # Create your views here.
 
 
@@ -26,9 +26,12 @@ def create_bio_for_user(sender, request, user, **kwags):
 
 def home(request):
     all_posts = Posts.objects.all().order_by('-created_at')
-    print(all_posts)
+    likes = list(Likes.objects.filter(liked_by = request.user.username).values_list('post_id', flat= True))
+    print(type(likes))
+    print(likes)
     return render(request, "home.html", {
-        'all_posts' : all_posts
+        'all_posts' : all_posts,
+        'likes' : likes
     })
 
 
@@ -60,11 +63,11 @@ def userdetail(request, name):
     user = User.objects.get(username = name)
     profile = Bio.objects.get(user = user)
     recommendations = Recommendations.objects.filter(recommended_user = user.username).order_by('-id')
-    if Follow.objects.filter(user = name).exists():
+    if Follow.objects.filter(user = name, follower = request.user.username).exists():
         follower_count = len(Follow.objects.filter(user = name))
         button_text = 'Unfollow'
     else:
-        follower_count = 0
+        follower_count = len(Follow.objects.filter(user = name))
         button_text = 'Follow'
 
     if Recommendations.objects.filter(recommended_by = request.user.username, recommended_user = user.username).exists() or (user.username == request.user.username):
@@ -212,3 +215,20 @@ def follow(request):
             create_follow.save()
         
         return redirect('profile/' + user)
+
+def like(request):
+    username = request.user.username
+    post_id = request.GET['post_id']
+    if Likes.objects.filter(liked_by = username, post_id = post_id).first():
+        delete_like = Likes.objects.get(liked_by = username, post_id = post_id)
+        dislike_post = Posts.objects.get(id = post_id)
+        dislike_post.no_of_likes -= 1
+        dislike_post.save()
+        delete_like.delete()
+    else:
+        like = Likes.objects.create(liked_by = username, post_id = post_id)
+        liked_post = Posts.objects.get(id = post_id)
+        liked_post.no_of_likes += 1
+        liked_post.save()
+        like.save()
+    return redirect('home')
