@@ -51,4 +51,7 @@ class Likes(models.Model):
     class Meta:
         unique_together = ('liked_by', 'post_id')
 
-
+class Comments(models.Model):
+    post_id = models.CharField(max_length=100)
+    commented_by = models.CharField(max_length=100)
+    comment = models.TextField() 

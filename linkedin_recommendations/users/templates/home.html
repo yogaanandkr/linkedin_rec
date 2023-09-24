@@ -38,6 +38,21 @@
 
 <p>{{post.no_of_likes}} likes</p>
 
+{% for comment in comments %}
+
+    {% if comment.post_id|stringformat:"s" == post.id|stringformat:"s" %}
+        <label for=""><a href="profile/{{comment.commented_by}}">{{comment.commented_by}}</a></label>
+        <p>{{comment.comment}}</p>
+    {% endif %}
+{% endfor %}
+
+<form action="/comment" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name = 'id' value="{{post.id}}">
+    <textarea name="comment" id="" cols="30" rows="10"></textarea>
+    <button type="submit">==></button>
+</form>
+
 {% endfor %}
 {% endblock content %}
 {% comment %} this will provide the url for google signin  {% endcomment %}

@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.urls import reverse_lazy    
 
 from . forms import ProfileForm
-from . models import Bio, User, Recommendations, Posts, Follow, Likes
+from . models import Bio, User, Recommendations, Posts, Follow, Likes, Comments
 # Create your views here.
 
 
@@ -27,11 +27,13 @@ def create_bio_for_user(sender, request, user, **kwags):
 def home(request):
     all_posts = Posts.objects.all().order_by('-created_at')
     likes = list(Likes.objects.filter(liked_by = request.user.username).values_list('post_id', flat= True))
+    comments = Comments.objects.all()
     print(type(likes))
     print(likes)
     return render(request, "home.html", {
         'all_posts' : all_posts,
-        'likes' : likes
+        'likes' : likes,
+        'comments' : comments
     })
 
 
@@ -232,3 +234,13 @@ def like(request):
         liked_post.save()
         like.save()
     return redirect('home')
+
+
+def comment(request):
+    if request.method == "POST":
+        id = request.POST['id']
+        commented_by = request.user.username
+        comment = request.POST['comment']
+        comments = Comments.objects.create(post_id = id, commented_by = commented_by, comment = comment)
+        comments.save()
+        return redirect('home')
