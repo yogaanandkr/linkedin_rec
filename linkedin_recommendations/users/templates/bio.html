@@ -26,7 +26,14 @@
 
 {% for recommendation in recommendations %}
     <div style="display: flex;" class="recommendations">
-        <a href="{{recommendation.recommended_by}}"><h4>{{recommendation.recommended_by}}</h4></a>      
+        <a href="{{recommendation.recommended_by}}">
+
+            {% if recommendation.recommended_by == request.user.username %}
+            <h4>You</h4>
+            {% else %}
+            <h4>{{recommendation.recommended_by}}</h4>
+            {% endif %}
+        </a>      
     {% if request.user.username == recommendation.recommended_by %}
     <p>{{recommendation.rec_created_at}} </p>
     <a class="btn btn-primary" href="edit/rec/{{recommendation.id}}">edit</a>

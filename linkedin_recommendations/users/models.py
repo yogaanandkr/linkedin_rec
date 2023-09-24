@@ -42,3 +42,16 @@ class Follow(models.Model):
 
     def __str__(self) -> str:
         return self.user
+    
+class Likes(models.Model):
+    liked_by = models.CharField(max_length=100)
+    post_id = models.CharField(max_length=200)
+    liked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('liked_by', 'post_id')
+
+class Comments(models.Model):
+    post_id = models.CharField(max_length=100)
+    commented_by = models.CharField(max_length=100)
+    comment = models.TextField() 

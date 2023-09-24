@@ -4,7 +4,7 @@
 
 
 {% block content %}
-
+{% include "includes/nav.html" %}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="post">Choose image</label>
